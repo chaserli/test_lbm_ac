@@ -12,11 +12,11 @@ k = fft.rfftfreq(N, L / N) * 2 * np.pi
 u0 = -np.sin(np.pi * x)
 t = np.linspace(0, T, 200)
 
-# TODO: 3/2 dealiasing
+# 3/2 dealiasing
 def burgers_rhs(t,u):
-    u_ext = fft.irfft(u)
-    dudx_ext = fft.irfft(1j * k * u)
-    u_dudx = fft.rfft(u_ext * dudx_ext)
+    u_ext = fft.irfft(u,n=int(N*3/2))
+    dudx_ext = fft.irfft(1j * k * u,n=int(N*3/2))
+    u_dudx = fft.rfft(u_ext * dudx_ext)[:N//2+1]*3/2
     return -NU * k**2 * u - u_dudx
 
 sols=np.zeros((t.size,x.size))
