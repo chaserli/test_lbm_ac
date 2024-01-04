@@ -3,14 +3,16 @@ import scipy.fft as fft
 import matplotlib.pyplot as plt
 
 NU = 0.01 / np.pi
-N = 512
-L = 2
+N = 400
+L = 2.
 T = 1
 
 x = np.linspace(-L/2, L/2, N, endpoint=False)
-k = fft.rfftfreq(N, L / N) * 2 * np.pi
+DX = L/N
+k = fft.rfftfreq(N, d=DX) * 2 * np.pi
 u0 = -np.sin(np.pi * x)
-t = np.linspace(0, T, 200)
+DT = min(T/200,0.8*DX**2/NU)
+t = np.arange(0,int(T/DT +1))*DT
 
 # 3/2 dealiasing
 def burgers_rhs(t,u):
